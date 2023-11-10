@@ -9,7 +9,8 @@ import { AppContext } from "./Context";
 
 export default function SearchBar() {
   const [userInput, setUserInput] = useState("");
-  const { setData, isLoading, setIsLoading } = useContext(AppContext);
+  const { setData, isLoading, setIsLoading, setIsError } =
+    useContext(AppContext);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -18,20 +19,26 @@ export default function SearchBar() {
   }
 
   async function getGitHubData(USERNAME) {
-    const YOUR_ACCESS_TOKEN = "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";
+    const { VITE_GITHUB_TOKEN } = import.meta.env;
+    // console.log(YOUR_ACCESS_TOKVITE_GITHUB_TOKENEN);
     await axios({
       method: "get",
       url: `/users/${USERNAME}`,
       baseURL: "https://api.github.com",
       headers: {
-        Authorization: `token ${YOUR_ACCESS_TOKEN}`,
+        Authorization: `token ${VITE_GITHUB_TOKEN}`,
         Accept: "application/json",
       },
-    }).then(async (res) => {
-      const validatedValue = await validateIt(res.data);
-      setIsLoading(false);
-      return setData(validatedValue);
-    });
+    })
+      .then(async (res) => {
+        const validatedValue = await validateIt(res.data);
+        setIsLoading(false);
+        return setData(validatedValue);
+      })
+      .catch(() => {
+        setIsLoading(false);
+        setIsError(true);
+      });
 
     function validateIt(userData) {
       for (const key in userData) {

@@ -6,7 +6,15 @@ const AppContext = createContext();
 function ContextProvider({ children }) {
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const wareHouse = { data, setData, isLoading, setIsLoading };
+  const [isError, setIsError] = useState(false);
+  const wareHouse = {
+    data,
+    setData,
+    isLoading,
+    setIsLoading,
+    isError,
+    setIsError,
+  };
   return (
     <AppContext.Provider value={wareHouse}>{children}</AppContext.Provider>
   );
