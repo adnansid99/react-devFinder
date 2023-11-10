@@ -26,8 +26,8 @@ export default function SearchBar() {
       url: `/users/${USERNAME}`,
       baseURL: "https://api.github.com",
       headers: {
-        Authorization: `token ${VITE_GITHUB_TOKEN}`,
-        Accept: "application/json",
+        Authorization: `Bearer ${VITE_GITHUB_TOKEN}`,
+        "X-GitHub-Api-Version": "2022-11-28",
       },
     })
       .then(async (res) => {
